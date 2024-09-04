@@ -28,6 +28,10 @@ class SuggestActionResponse(BaseModel):
     reason: str
 
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the AI Scaffolding Strategist API"}
+
 # Endpoint 1: Start Session
 @app.post("/api/startSession", response_model=SessionResponse)
 def start_session():
