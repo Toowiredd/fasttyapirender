@@ -1,27 +1,37 @@
-# Deploy FastAPI on Render
+# FastAPI AI Scaffolding Strategist
 
-Use this repo as a template to deploy a Python [FastAPI](https://fastapi.tiangolo.com) service on Render.
+This project provides a simple FastAPI service used as a template for deployment on [Render](https://render.com). It now includes an example API for managing interactive question sessions.
 
-See https://render.com/docs/deploy-fastapi or follow the steps below:
+## Features
 
-## Manual Steps
+- Create sessions with optional custom questions
+- Retrieve and answer questions
+- Persist session progress across restarts
+- Review completed steps and get suggested next actions
 
-1. You may use this repository directly or [create your own repository from this template](https://github.com/render-examples/fastapi/generate) if you'd like to customize the code.
-2. Create a new Web Service on Render.
-3. Specify the URL to your new repository or this repository.
-4. Render will automatically detect that you are deploying a Python service and use `pip` to download the dependencies.
-5. Specify the following as the Start Command.
+## Running Locally
 
-    ```shell
-    uvicorn main:app --host 0.0.0.0 --port $PORT
-    ```
+Install dependencies and start the development server:
 
-6. Click Create Web Service.
+```bash
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
-Or simply click:
+## Deploying to Render
+
+1. Create a new Web Service and point it at this repository.
+2. Render will install dependencies from `requirements.txt`.
+3. Use the following Start Command:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+Or click the button below:
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/render-examples/fastapi)
 
 ## Thanks
 
-Thanks to [Harish](https://harishgarg.com) for the [inspiration to create a FastAPI quickstart for Render](https://twitter.com/harishkgarg/status/1435084018677010434) and for some sample code!
+Thanks to [Harish](https://harishgarg.com) for the inspiration to create a FastAPI quickstart for Render and for some sample code!
