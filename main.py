@@ -1,5 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from typing import List, Optional
+from sse_starlette import EventSourceResponse
+import asyncio
+import json
 
 from models import (
     SessionResponse,
@@ -103,3 +106,21 @@ async def session_details(session_id: str):
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     return SessionDetailResponse(**session.dict())
+
+
+@app.get("/api/stream/{session_id}")
+async def stream_session(session_id: str, request: Request):
+    """Stream session progress using Server-Sent Events."""
+    session = session_manager.get(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    async def event_generator():
+        while True:
+            current = session_manager.get(session_id)
+            yield {"data": json.dumps(current.dict()), "event": "progress"}
+            if not current.pending_steps or await request.is_disconnected():
+                break
+            await asyncio.sleep(1)
+
+    return EventSourceResponse(event_generator(), headers={"Cache-Control": "no-cache"})
